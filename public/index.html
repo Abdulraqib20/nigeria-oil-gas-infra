@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nigeria Oil & Gas Infrastructure Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1> Nigeria Oil & Gas Infrastructure</h1>
+                <p>Comprehensive visualization of gas processing plants, refineries, flow stations, pipelines, and more
+                </p>
+            </div>
+            <div class="controls">
+                <button id="fetchData" class="btn btn-primary">Fetch Infrastructure Data</button>
+                <button id="exportData" class="btn btn-export" disabled>Export Data</button>
+                <button id="clearMap" class="btn btn-secondary">Clear Map</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-overlay" id="mapOverlay">
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <div class="spinner"></div>
+                        <p>Fetching infrastructure data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Infrastructure Types</h3>
+                    <div class="filter-controls">
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-gas-processing" checked>
+                            <span class="checkmark gas-processing"></span>
+                            Gas Processing Plants
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-refineries" checked>
+                            <span class="checkmark refineries"></span>
+                            Oil Refineries
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-flow-stations" checked>
+                            <span class="checkmark flow-stations"></span>
+                            Flow Stations
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-pipelines" checked>
+                            <span class="checkmark pipelines"></span>
+                            Pipelines
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-liquefaction" checked>
+                            <span class="checkmark liquefaction"></span>
+                            Liquefaction Plants
+                        </label>
+                        <label class="filter-item">
+                            <input type="checkbox" id="filter-cng-stations" checked>
+                            <span class="checkmark cng-stations"></span>
+                            CNG Mother Stations
+                        </label>
+                    </div>
+                </div>
+
+                <div class="sidebar-content">
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalCount">0</span>
+                            <span class="stat-label">Total Facilities</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="visibleCount">0</span>
+                            <span class="stat-label">Visible</span>
+                        </div>
+                    </div>
+
+                    <div class="facilities-list" id="facilitiesList">
+                        <p class="empty-state">Click "Fetch Infrastructure Data" to load facilities</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Info Modal -->
+        <div id="infoModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps Script -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOFdfCS0TwBjx4bYAaFxXO_8NBxpZS2jU&libraries=places"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
