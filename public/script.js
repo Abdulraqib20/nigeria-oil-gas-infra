@@ -3,6 +3,45 @@ let map;
 let markers = [];
 let infrastructureData = [];
 let infoWindow;
+let googleMapsLoaded = false;
+
+// Load Google Maps API dynamically
+async function loadGoogleMapsAPI() {
+    try {
+        const response = await fetch('/api/config');
+        const config = await response.json();
+
+        if (!config.googleMapsApiKey) {
+            throw new Error('Google Maps API key not available');
+        }
+
+        return new Promise((resolve, reject) => {
+            if (window.google && window.google.maps) {
+                googleMapsLoaded = true;
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&libraries=places&callback=initializeGoogleMaps`;
+            script.async = true;
+            script.defer = true;
+            script.onerror = () => reject(new Error('Failed to load Google Maps API'));
+
+            window.initializeGoogleMaps = () => {
+                googleMapsLoaded = true;
+                delete window.initializeGoogleMaps;
+                resolve();
+            };
+
+            document.head.appendChild(script);
+        });
+    } catch (error) {
+        console.error('Error loading Google Maps API:', error);
+        showNotification('Failed to load Google Maps API', 'error');
+        throw error;
+    }
+}
 
 // Infrastructure type configurations
 const infrastructureTypes = {
@@ -39,14 +78,25 @@ const infrastructureTypes = {
 };
 
 // Initialize the application
-document.addEventListener('DOMContentLoaded', function () {
-    initializeMap();
-    setupEventListeners();
-    setupFilters();
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        await loadGoogleMapsAPI();
+        initializeMap();
+        setupEventListeners();
+        setupFilters();
+    } catch (error) {
+        console.error('Failed to initialize application:', error);
+        showNotification('Failed to initialize the application', 'error');
+    }
 });
 
 // Initialize Google Maps
 function initializeMap() {
+    if (!window.google || !window.google.maps) {
+        console.error('Google Maps API not loaded');
+        return;
+    }
+
     // Nigeria center coordinates
     const nigeriaCenter = { lat: 9.0820, lng: 8.6753 };
 

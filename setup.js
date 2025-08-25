@@ -38,25 +38,8 @@ NODE_ENV=development
         fs.writeFileSync(envPath, envContent);
         console.log('✅ .env file created successfully');
 
-        // Update HTML file with API key
-        updateHtmlFile(apiKey.trim());
-
         rl.close();
     });
-}
-
-function updateHtmlFile(apiKey) {
-    const htmlPath = path.join(__dirname, 'public', 'index.html');
-
-    if (fs.existsSync(htmlPath)) {
-        let htmlContent = fs.readFileSync(htmlPath, 'utf8');
-        htmlContent = htmlContent.replace(
-            /AIzaSyBOFdfCS0TwBjx4bYAaFxXO_8NBxpZS2jU/g,
-            apiKey
-        );
-        fs.writeFileSync(htmlPath, htmlContent);
-        console.log('✅ Updated HTML file with API key');
-    }
 }
 
 // Check if dependencies are installed

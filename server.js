@@ -140,6 +140,19 @@ app.get('/api/infrastructure', async (req, res) => {
     }
 });
 
+// API endpoint to provide Google Maps API key
+app.get('/api/config', (req, res) => {
+    if (!GOOGLE_MAPS_API_KEY) {
+        return res.status(500).json({
+            error: 'Google Maps API key not configured'
+        });
+    }
+
+    res.json({
+        googleMapsApiKey: GOOGLE_MAPS_API_KEY
+    });
+});
+
 // Serve the main HTML page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
